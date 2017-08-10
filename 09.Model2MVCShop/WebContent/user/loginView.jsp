@@ -6,23 +6,43 @@
 
 <link rel="stylesheet" href="/css/admin.css" type="text/css">
 
+<script src="http://code.jquery.com/jquery-2.1.4.min.js"></script>
 <script type="text/javascript">
-	function fncLogin() {
-		var id=document.loginForm.userId.value;
-		var pw=document.loginForm.password.value;
-		if(id == null || id.length <1) {
-			alert('ID 를 입력하지 않으셨습니다.');
-			document.loginForm.userId.focus();
-			return;
-		}
+		$(function(){
+			$("#userId").focus();
+			
+			$("td[width='56'] img[src='/images/btn_login.gif']").on("click",function(){
+				/* var id=document.loginForm.userId.value;
+				var pw=document.loginForm.password.value; */
+				
+				var id=$("input[name='userId'].ct_input_g").val
+				var pw=$("input[name='password'].ct_input_g").val
+				
+				if(id == null || id.length <1) {
+					alert('ID 를 입력하지 않으셨습니다.');
+					//document.loginForm.userId.focus();
+					("input[name='userId'].ct_input_g").foucs();
+					return;
+				}
+				
+				if(pw == null || pw.length <1) {
+					alert('패스워드를 입력하지 않으셨습니다.');
+					//document.loginForm.password.focus();
+					("input[name='password'].ct_input_g").foucs();
+					return;
+				}
+				$("form").attr("method","POST").attr("action","/user/login").attr("target","_parent").submit();
+			});
+		});
 		
-		if(pw == null || pw.length <1) {
-			alert('패스워드를 입력하지 않으셨습니다.');
-			document.loginForm.password.focus();
-			return;
-		}
-	    document.loginForm.submit();
-	}
+		$( function() {
+			//==> 추가된부분 : "addUser"  Event 연결
+			$("img[src='/images/btn_add.gif']").on("click" , function() {
+				self.location = "/user/addUser"
+			});
+		});
+
+	
 </script>
 </head>
 
@@ -70,7 +90,7 @@
                 	<img src="/images/text_id.gif" width="100" height="30">
                 </td>
                 <td height="30">
-                  <input 	type="text" name="userId"  class="ct_input_g" 
+                  <input 	type="text" name="userId" id="userId" class="ct_input_g" 
                   				style="width:180px; height:19px"  maxLength='50'/>          
           		</td>
                 <td width="20" height="30">&nbsp;</td>
@@ -93,15 +113,11 @@
       				<table width="136" height="20" border="0" cellpadding="0" cellspacing="0">
                           <tr> 
                             <td width="56">
-                            	<a href="javascript:fncLogin();">
                             		<img src="/images/btn_login.gif" width="56" height="20" border="0">
-                            	</a>
                             </td>
                             <td width="10">&nbsp;</td>
                             <td width="70">
-                            	<a href="addUserView.jsp;">
                             		<img src="/images/btn_add.gif" width="70" height="20" border="0">
-                            	</a>
                             </td>
                           </tr>
                     </table>
@@ -124,7 +140,3 @@
 
 </body>
 </html>
-
-<script type="text/javascript">
-	document.loginForm.userId.focus();
-</script>
