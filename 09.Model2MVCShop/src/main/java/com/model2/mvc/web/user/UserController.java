@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -114,6 +115,18 @@ public class UserController {
 		
 		return "forward:/user/updateUser.jsp";
 		
+	}
+	
+	@RequestMapping( value="updateUser", method=RequestMethod.GET )
+	public String updateUser( @RequestParam("userId") String userId , Model model ) throws Exception{
+
+		System.out.println("/user/updateUser : GET");
+		//Business Logic
+		User user = userService.getUser(userId);
+		// Model °ú View ¿¬°á
+		model.addAttribute("user", user);
+		
+		return "forward:/user/updateUser.jsp";
 	}
 	
 	@RequestMapping(value="updateUser", method=RequestMethod.POST)

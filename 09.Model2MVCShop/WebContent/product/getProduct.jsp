@@ -8,6 +8,38 @@
 
 <link rel="stylesheet" href="/css/admin.css" type="text/css">
 
+<script src="http://code.jquery.com/jquery-2.1.4.min.js"></script>
+
+<script type="text/javaScript">
+	$(function(){
+		
+		$("td.ct_btn01:contains('구매')[background='/images/ct_btnbg02.gif']").on("click",function(){
+			
+			self.location = "/purchase/addPurchase?prodNo=${product.prodNo}";
+			
+		})
+		
+		$("td.ct_btn01:contains('이전')").on("click", function(){
+			
+			self.location = history.go(-1);
+			
+		})
+		
+		$("td.ct_btn01:contains('확인')").on("click", function(){
+			
+			self.location = "/product/listProduct?menu=manage"
+			
+		})
+		
+		$("td[width='30']:contains('댓글삭제')").on("click", function(){
+			
+			self.location = "/product/commentDelete?productCommentNo="+$(this).find("input").val()+"&prodNo=${product.prodNo}&menu=search"
+			
+		})	
+		
+	})
+</script>
+
 <title>Insert title here</title>
 </head>
 
@@ -58,7 +90,6 @@
 			상품명 <img src="/images/ct_icon_red.gif" width="3" height="3" align="absmiddle"/>
 		</td>
 		<td bgcolor="D6D6D6" width="1"></td>
-		<%-- <td class="ct_write01"><%=product.getProdName() %></td>  --%>
 		<td class="ct_write01">${product.prodName}</td>
 	</tr>
 	<tr>
@@ -70,7 +101,6 @@
 		</td>
 		<td bgcolor="D6D6D6" width="1"></td>
 		<td class="ct_write01">
-			<%-- <img src = <%=product.getFileName() %>>  --%>
 			<img src = "/images/uploadFiles/${product.fileName}">
 		</td>
 	</tr>
@@ -82,7 +112,6 @@
 			상품상세정보 <img src="/images/ct_icon_red.gif" width="3" height="3" align="absmiddle"/>
 		</td>
 		<td bgcolor="D6D6D6" width="1"></td>
-		<%--  <td class="ct_write01"><%=product.getProdDetail() %></td> --%>
 		<td class="ct_write01">${product.prodDetail }</td>
 	</tr>
 	<tr>
@@ -91,7 +120,6 @@
 	<tr>
 		<td width="104" class="ct_write">제조일자</td>
 		<td bgcolor="D6D6D6" width="1"></td>
-		<%-- <td class="ct_write01"><%=product.getManuDate() %></td> --%>
 		<td class="ct_write01">${product.manuDate }</td>
 	</tr>
 	<tr>
@@ -100,7 +128,6 @@
 	<tr>
 		<td width="104" class="ct_write">가격</td>
 		<td bgcolor="D6D6D6" width="1"></td>
-		<%-- <td class="ct_write01"><%=product.getPrice() %></td> --%>
 		<td class="ct_write01">${product.price}</td>
 	</tr>
 	<tr>
@@ -109,7 +136,6 @@
 	<tr>
 		<td width="104" class="ct_write">등록일자</td>
 		<td bgcolor="D6D6D6" width="1"></td>
-		<%-- <td class="ct_write01"><%=product.getRegDate() %></td> --%>
 		<td class="ct_write01">${product.regDate}</td>
 	</tr>
 	<tr>
@@ -138,7 +164,8 @@
 								<img src="/images/ct_btnbg01.gif" width="17" height="23"/>
 								</td>
 								<td background="/images/ct_btnbg02.gif" class="ct_btn01" style="padding-top: 3px;">
-								<a href="/purchase/addPurchase?prodNo=${product.prodNo }">구매</a>
+								<%-- <a href="/purchase/addPurchase?prodNo=${product.prodNo }">구매</a> --%>
+								구매
 								</td>				
 								<td width="14" height="23">
 								<img src="/images/ct_btnbg03.gif" width="14" height="23">
@@ -158,10 +185,12 @@
 					<c:choose>
 						<c:when test="${param.comePath eq null || param.comePath eq 'purchaser'
 								     	|| param.comePath eq 'saleList'}">
-							<a href="javascript:history.go(-1)">이전</a>
+							<!-- <a href="javascript:history.go(-1)">이전</a> -->
+							이전
 						</c:when>
 						<c:when test="${param.comePath eq 'manage'}">
-							<a href="/product/listProduct?menu=manage">확인</a>
+							<!-- <a href="/product/listProduct?menu=manage">확인</a> -->
+							확인
 						</c:when>
 					</c:choose>
 					
@@ -213,7 +242,9 @@
 			</td>
 			<td width="30">
 				<c:if test="${user.userId eq comments.userId || user.userId eq 'admin' }">
-				<a href="/product/commentDelete?productCommentNo=${comments.productCommentNo }&prodNo=${product.prodNo}&menu=search">댓글삭제</a>
+				<%-- <a href="/product/commentDelete?productCommentNo=${comments.productCommentNo }&prodNo=${product.prodNo}&menu=search">댓글삭제</a> --%>
+				<input type="hidden" name="productCommentNo" value="${comments.productCommentNo}">
+				댓글삭제
 				</c:if>
 			</td>
 		</tr>

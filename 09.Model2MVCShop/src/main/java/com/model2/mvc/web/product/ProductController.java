@@ -98,6 +98,7 @@ public class ProductController {
 									  @RequestParam(value="userComment", required=false)String userComment)
 									  throws Exception{
 		
+
 		//쿠키 관리를 위한 부분
 		System.out.println("Cookie History : "+history);
 		Cookie cookie=null;
@@ -114,7 +115,7 @@ public class ProductController {
 		
 		
 		//댓글을 위한 부분
-		System.out.println("userComment asdf = "+userComment);
+		System.out.println("userComment 유저가입력한 댓글 = "+userComment);
 		if(userComment != null){
 			Map<String, Object> map = new HashMap<String, Object>();
 			User user = (User)(session.getAttribute("user"));
@@ -216,8 +217,10 @@ public class ProductController {
 	}
 	
 	@RequestMapping(value="commentDelete", method=RequestMethod.GET)
-	public ModelAndView commentDelete(@RequestParam("productCommentNo")String productCommentNo) throws Exception{
-		
+	public ModelAndView commentDelete(@RequestParam("productCommentNo")String productCommentNo,
+											@RequestParam("prodNo")String prodNo,
+											@RequestParam("menu")String menu) throws Exception{
+				
 		productService.deleteProductComment(productCommentNo);
 		
 		ModelAndView modelAndView = new ModelAndView();

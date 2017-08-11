@@ -16,12 +16,36 @@
 	</script>
  </c:if>
 
+<script src="http://code.jquery.com/jquery-2.1.4.min.js"></script>
 <script type="text/javascript">
 	// 검색 / page 두가지 경우 모두 Form 전송을 위해 JavaScrpt 이용  
 	function fncGetList(currentPage) {
 		document.getElementById("currentPage").value = currentPage;
 	   	document.detailForm.submit();		
 	}
+	
+	$(function(){
+		
+		 $( "td.ct_btn01:contains('검색')" ).on("click" , function() {
+				fncGetUserList(1);
+		 });
+		
+		 $(".ct_list_pop td:nth-child(3)").on("click", function(){
+			 console.log("히든1 : "+$(this).find('input').val());
+			 console.log("히든2 : "+$($(this).find('input')[1]).val());
+			 self.location = "/product/getProduct?prodNo="+$(this).find('input').val()+"&menu="+$($(this).find('input')[1]).val()
+		 })
+		 
+		 $(".ct_list_pop td:nth-child(9):contains('배송하기')").on("click", function(){
+			 console.log("히든1 : "+$(this).find('input').val());
+			 self.location = "/purchase/updateTranCodeByProd?prodNo="+$(this).find('input').val()+"&tranCode=2"
+		 })
+		 
+		 $(".ct_list_pop td:nth-child(11)").on("click", function(){
+			 console.log("히든1 : "+$(this).find('input').val());
+			 self.location = "/purchase/addWishPurchase?prodNo="+$(this).find('input').val()
+		 })
+	})
 </script>
 </head>
 
@@ -78,7 +102,8 @@
 						<img src="/images/ct_btnbg01.gif" width="17" height="23">
 					</td>
 					<td background="/images/ct_btnbg02.gif" class="ct_btn01" style="padding-top:3px;">
-						<a href="javascript:fncGetList('1');">검색</a>
+						<!-- <a href="javascript:fncGetList('1');">검색</a> -->
+						검색
 					</td>
 					<td width="14" height="23">
 						<img src="/images/ct_btnbg03.gif" width="14" height="23">
@@ -127,61 +152,70 @@
 	<c:set var="i" value="0"/>
 	<c:forEach var="product" items="${list}">
 		<c:set var="i" value="${i+1}"/>
-		<tr class="ct_list_pop">
-		<td align="center">${i}</td>
-		<td></td>		
-		<td align="left">
-			<a href="/product/getProduct?prodNo=${product.prodNo}&menu=${param.menu}">${product.prodName}</a>
-		</td>	
-		<td></td>
-		<td align="left">${product.price }</td>
-		<td></td>
-		<td align="left">${product.regDate }</td>
-		<td></td>
-		<td align="left"> 
-				<c:if test="${!empty param.menu && param.menu eq 'search'}">		
-					<c:choose>
-						<c:when test="${product.tranStatusCode eq null }">
-							판매중
-						</c:when>
-						<c:when test="${product.tranStatusCode <= 2 && product.tranStatusCode>=1 }">
-							재고없음
-						</c:when>
-						<c:when test="${!empty product.tranStatusCode && product.tranStatusCode eq 3 }">
-							판매완료
-						</c:when>
-					</c:choose>
-					<c:if test="${product.tranStatusCode ne null ? '재고없음' : '판매중'}"></c:if>				
-				</c:if>
-				<c:if test="${!empty param.menu && param.menu eq 'manage' }">
-					<c:choose>
-						<c:when test="${product.tranStatusCode eq 1 }">
-							구매완료 / <a href="/purchase/updateTranCodeByProd?prodNo=${product.prodNo}&tranCode=2">배송하기</a>
-						</c:when>
-						<c:when test="${product.tranStatusCode eq 2 }">
-							배송중
-						</c:when>
-						<c:when test="${product.tranStatusCode eq 3 }">
-							배송완료
-						</c:when>
-						<c:otherwise>
-							판매중
-						</c:otherwise>
-					</c:choose>
-				</c:if>
-		</td>
-		<td></td>
-		<c:if test="${!empty param.menu && param.menu ne 'manage' }">
-		<td align="center">
-			<c:if test="${product.tranStatusCode ne null}">
-			장바구니 불가(재고X)
-			</c:if>
-			<c:if test="${product.tranStatusCode eq null}">
-			<a href="/purchase/addWishPurchase?prodNo=${product.prodNo }">장바구니 담기</a>
-			</c:if>
-		</td>
-		</c:if>	
-	</tr>
+			<tr class="ct_list_pop">
+				<td align="center">${i}</td>
+				<td></td>		
+				<td align="left">
+					<%-- <a href="/product/getProduct?prodNo=${product.prodNo}&menu=${param.menu}">${product.prodName}</a> --%>
+					<input type="hidden" value="${product.prodNo}">
+					<input type="hidden" value="${param.menu}">
+					${product.prodName }
+				</td>	
+				<td></td>
+				<td align="left">${product.price }</td>
+				<td></td>
+				<td align="left">${product.regDate }</td>
+				<td></td>
+				<td align="left">
+				 
+						<c:if test="${!empty param.menu && param.menu eq 'search'}">		
+							<c:choose>
+								<c:when test="${product.tranStatusCode eq null }">
+									판매중
+								</c:when>
+								<c:when test="${product.tranStatusCode <= 2 && product.tranStatusCode>=1 }">
+									재고없음
+								</c:when>
+								<c:when test="${!empty product.tranStatusCode && product.tranStatusCode eq 3 }">
+									판매완료
+								</c:when>
+							</c:choose>
+							<c:if test="${product.tranStatusCode ne null ? '재고없음' : '판매중'}"></c:if>				
+						</c:if>
+						
+						<c:if test="${!empty param.menu && param.menu eq 'manage' }">
+							<c:choose>
+								<c:when test="${product.tranStatusCode eq 1 }">
+									<%-- 구매완료 / <a href="/purchase/updateTranCodeByProd?prodNo=${product.prodNo}&tranCode=2">배송하기</a> --%>
+									<input type="hidden" value=${product.prodNo }>
+									구매완료 / 배송하기
+								</c:when>
+								<c:when test="${product.tranStatusCode eq 2 }">
+									배송중
+								</c:when>
+								<c:when test="${product.tranStatusCode eq 3 }">
+									배송완료
+								</c:when>
+								<c:otherwise>
+									판매중
+								</c:otherwise>
+							</c:choose>
+						</c:if>
+				</td>
+				<td></td>
+				<c:if test="${!empty param.menu && param.menu ne 'manage' }">
+				<td align="center">
+					<c:if test="${product.tranStatusCode ne null}">
+					장바구니 불가(재고X)
+					</c:if>
+					<c:if test="${product.tranStatusCode eq null}">
+					<input type="hidden" value="${product.prodNo }" >
+					<%-- <a href="/purchase/addWishPurchase?prodNo=${product.prodNo }">장바구니 담기</a> --%>
+					장바구니 담기
+					</c:if>
+				</td>
+			</c:if>	
+		</tr>
 	<tr>
 		<td colspan="11" bgcolor="D6D7D6" height="1"></td>
 	</tr>	
