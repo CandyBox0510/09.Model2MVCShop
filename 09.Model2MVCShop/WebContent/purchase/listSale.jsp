@@ -9,11 +9,20 @@
 
 <link rel="stylesheet" href="/css/admin.css" type="text/css">
 
+<script src="http://code.jquery.com/jquery-2.1.4.min.js"></script>
 <script type="text/javascript">
 	function fncGetList(currentPage) {
-		document.getElementById("currentPage").value = currentPage;
-		document.detailForm.submit();
+		$('#currentPage').value(currentPage)
+		$('form').attr("method","POST").attr("action","/purchase/listSale").submit();
 	}
+	
+	$(function(){
+		
+		$("tr.ct_list_pop td:nth-child(3)").on("click" , function(){
+			self.location = "/product/getProduct?comePath=saleList&menu=search&prodNo="+$(this).find('input').val();
+			}
+		})
+	})
 </script>
 </head>
 
@@ -66,7 +75,8 @@
 			<td></td>
 			
 			<td align="left">
-				<a href="/product/getProduct?comePath=saleList&menu=search&prodNo=${sale.purchaseProd.prodNo }"> ${sale.purchaseProd.prodName }</a>
+				${sale.purchaseProd.prodName }
+				<input type="hidden" value="${sale.purchaseProd.prodNo }">
 			</td>
 			<td></td>
 			<td align="left">${sale.purchaseProd.price }</td>

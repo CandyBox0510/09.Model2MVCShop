@@ -1,18 +1,8 @@
 <%@ page contentType="text/html; charset=euc-kr" %>
 
-<%@ page import="com.model2.mvc.service.domain.User" %>
-
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
-<%-- <%
-	User user=(User)session.getAttribute("user");
 
-	String role="";
-
-	if(user != null) {
-		role=user.getRole();
-	}
-%> --%>
 
 <html>
 <head>
@@ -20,10 +10,52 @@
 
 <link href="/css/left.css" rel="stylesheet" type="text/css">
 
+<script src="http://code.jquery.com/jquery-2.1.4.min.js"></script>
 <script type="text/javascript">
 function history(){
 	popWin = window.open("/history.jsp","popWin","left=300, top=200, width=300, height=200, marginwidth=0, marginheight=0, scrollbars=no, scrolling=no, menubar=no, resizable=no");
 }
+
+$(function(){
+	
+	$("td.Depth03:contains('개인정보조회')").on("click",function(){
+		$(window.parent.frames["rightFrame"].document.location).attr("href","/user/getUser?userId="+$(this).find('input').val());
+	})
+	
+	$("td.Depth03:contains('회원정보조회')").on("click",function(){
+		$(window.parent.frames["rightFrame"].document.location).attr("href","/user/listUser");
+	})
+	
+	$("td.Depth03:contains('판매상품등록')").on("click",function(){
+		$(window.parent.frames["rightFrame"].document.location).attr("href","../product/addProductView.jsp;");
+	})
+	
+	$("td.Depth03:contains('판매상품관리')").on("click",function(){
+		$(window.parent.frames["rightFrame"].document.location).attr("href","/product/listProduct.do?menu=manage");
+	})
+	
+	$("td.Depth03:contains('판매완료상품')").on("click",function(){
+		$(window.parent.frames["rightFrame"].document.location).attr("href","/purchase/listSale");
+	})
+	
+	$("td.Depth03:contains('상 품 검 색')").on("click",function(){
+		$(window.parent.frames["rightFrame"].document.location).attr("href","/product/listProduct.do?menu=search");
+	})
+	
+	$("td.Depth03:contains('구매이력조회')").on("click",function(){
+		$(window.parent.frames["rightFrame"].document.location).attr("href","/purchase/listPurchase");
+	})
+	
+	$("td.Depth03:contains('장바구니 보기')").on("click",function(){
+		$(window.parent.frames["rightFrame"].document.location).attr("href","/purchase/listWishPurchase");
+	})
+	
+	$("td.Depth03:contains('최근 본 상품')").on("click",function(){
+		history();
+	})
+	
+})
+
 </script>
 </head>
 
@@ -40,7 +72,8 @@ function history(){
 		<c:if test="${user ne null }">
 		<tr>
 		<td class="Depth03">
-			<a href="/user/getUser?userId=${user.userId }" target="rightFrame">개인정보조회</a>
+			개인정보조회
+			<input type="hidden" value="${user.userId }">
 		</td>
 		</tr>
 		</c:if>
@@ -49,7 +82,7 @@ function history(){
 		<c:if test="${user.role eq 'admin'}">
 		<tr>
 		<td class="Depth03" >
-			<a href="/user/listUser" target="rightFrame">회원정보조회</a>
+			회원정보조회
 		</td>
 		</tr>
 		</c:if>
@@ -67,16 +100,16 @@ function history(){
 	<table  border="0" cellspacing="0" cellpadding="0" width="159">
 		<tr>
 			<td class="Depth03">
-				<a href="../product/addProductView.jsp;" target="rightFrame">판매상품등록</a>
+				판매상품등록
 			</td>
 		</tr>
 		<td class="Depth03">
-				<a href="/product/listProduct.do?menu=manage" target="rightFrame">판매상품관리</a>
+				판매상품관리
 			</td>
 		</tr>
 		<tr>
 			<td class="Depth03">
-				<a href="/purchase/listSale.do" target="rightFrame">판매완료상품</a>
+				판매완료상품
 			</td>
 		</tr>
 		<tr>
@@ -93,7 +126,7 @@ function history(){
 	<table  border="0" cellspacing="0" cellpadding="0" width="159">
 		<tr>
 			<td class="Depth03">
-				<a href="/product/listProduct.do?menu=search" target="rightFrame">상 품 검 색</a>
+				상 품 검 색
 			</td>
 		</tr>
 
@@ -101,12 +134,12 @@ function history(){
 				<c:if test="${user.role eq 'user' }">
 					<tr>
 						<td class="Depth03">
-							<a href="/purchase/listPurchase.do" target="rightFrame">구매이력조회</a>
+							구매이력조회
 						</td>
 					</tr>
 					<tr>
 						<td class="Depth03">
-							<a href="/purchase/listWishPurchase.do" target="rightFrame">장바구니 보기</a>
+							장바구니 보기
 						</td>
 					</tr>
 				</c:if>
@@ -117,7 +150,7 @@ function history(){
 		</tr>
 		<tr>
 			<td class="Depth03">
-				<a href="javascript:history()">최근 본 상품</a>
+				최근 본 상품
 			</td>
 		</tr>
 	</table>

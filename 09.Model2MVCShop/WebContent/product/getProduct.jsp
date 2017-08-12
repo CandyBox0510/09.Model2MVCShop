@@ -15,7 +15,7 @@
 		
 		$("td.ct_btn01:contains('구매')[background='/images/ct_btnbg02.gif']").on("click",function(){
 			
-			self.location = "/purchase/addPurchase?prodNo=${product.prodNo}";
+			self.location = "/purchase/addPurchase?prodNo="+$(this).find('input').val();
 			
 		})
 		
@@ -35,8 +35,11 @@
 			
 			self.location = "/product/commentDelete?productCommentNo="+$(this).find("input").val()+"&prodNo=${product.prodNo}&menu=search"
 			
-		})	
+		})
 		
+		$("input[value='댓글등록']").on("click", function(){
+			$("form[name='detailForm']").submit();
+		})
 	})
 </script>
 
@@ -166,6 +169,7 @@
 								<td background="/images/ct_btnbg02.gif" class="ct_btn01" style="padding-top: 3px;">
 								<%-- <a href="/purchase/addPurchase?prodNo=${product.prodNo }">구매</a> --%>
 								구매
+								<input type="hidden" value=${product.prodNo }>
 								</td>				
 								<td width="14" height="23">
 								<img src="/images/ct_btnbg03.gif" width="14" height="23">
@@ -259,7 +263,7 @@
 <tr>
 	<td width="105">
 		<input type="text" name="userComment" width="100%">
-		<input type="submit" value="댓글등록">
+		<input type="button" value="댓글등록">
 	</td>
 <tr>	
 </table>

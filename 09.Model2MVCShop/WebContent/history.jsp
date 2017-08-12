@@ -16,9 +16,9 @@
 	String history = null;
 	Cookie[] cookies = request.getCookies();
 	if (cookies == null){
-		System.out.println("ÄíÅ°³ÎÀÌÁö·Õ");
+		System.out.println("::ÄíÅ° is Null");
 	}else{
-		System.out.println("ÄíÅ°³Î¾Æ´ÏÁö·Õ");
+		System.out.println("::ÄíÅ° is not Null");
 		System.out.println(cookies.length);
 	}
 	if (cookies!=null && cookies.length > 0) {

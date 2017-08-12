@@ -8,15 +8,34 @@
 
 <title>구매정보 수정</title>
 
-<script type="text/javascript" src="../javascript/calendar.js">
+<script type="text/javascript" src="../javascript/calendar.js"></script>
+<script src="http://code.jquery.com/jquery-2.1.4.min.js"></script>
+<script type="text/javascript">
+
+$(function(){
+	
+	$("td.ct_btn01:contains('수정')").on("click", function(){
+		$(function(){
+			$('form').attr("method", "POST").attr("action","/purchase/updatePurchase?tranNo="+$(this).find('input').val()).submit();
+		})
+	})
+	
+	
+	$("td.ct_btn01:contains('취소')").on("click", function(){
+		history-go(01);		
+	})
+	
+})
+	
 </script>
 
 </head>
 
 <body bgcolor="#ffffff" text="#000000">
 
-<%-- <form name="updatePurchase" method="post"	action="/updatePurchase.do?tranNo=<%=purchase.getTranNo()%>"> --%>
-<form name="updatePurchase" method="post"	action="/purchase/updatePurchase?tranNo=${purchase.tranNo }">
+<form name="updatePurchase">
+
+<input type="hidden" value=${purchase.tranNo }>
 
 <table width="100%" height="37" border="0" cellpadding="0" cellspacing="0">
 	<tr>
@@ -44,9 +63,7 @@
 	<tr>
 		<td width="104" class="ct_write">구매자아이디</td>
 		<td bgcolor="D6D6D6" width="1"></td>
-		<%-- <td class="ct_write01"><%=buyer.getUserId() %></td> --%>
 		<td class="ct_write01">${purchase.buyer.userId }</td>
-		<%-- <input type="hidden" name="buyerId" value=<%=buyer.getUserId()%>> --%>
 		<input type="hidden" name="search.buyerId" value=${purchase.buyer.userId }>
 	</tr>
 	<tr>
@@ -58,8 +75,6 @@
 		<td class="ct_write01">
 			<select 	name="paymentOption" 	class="ct_input_g" style="width: 100px; height: 19px" 
 							maxLength="20">
-				<%-- <option value="1" <%=purchase.getPaymentOption().equals("1")? "selected" : "" %> >현금구매</option>
-				<option value="2" <%=purchase.getPaymentOption().equals("2")? "selected" : "" %> >신용구매</option> --%>
 				<option value="1" ${!empty purchase.paymentOption && purchase.paymentOption == '1' ? "selected" : "" } >현금구매</option>
 				<option value="2" ${!empty purchase.paymentOption && purchase.paymentOption == '2' ? "selected" : "" } >신용구매</option>
 			</select>
@@ -73,7 +88,6 @@
 		<td bgcolor="D6D6D6" width="1"></td>
 		<td class="ct_write01">
 			<input 	type="text" name="receiverName" 	class="ct_input_g" style="width: 100px; height: 19px" 
-							<%-- maxLength="20" value=<%=purchase.getReceiverName() %> /> --%>
 							maxLength="20" value="${purchase.receiverName }" />
 		</td>
 	</tr>
@@ -85,7 +99,6 @@
 		<td bgcolor="D6D6D6" width="1"></td>
 		<td class="ct_write01">
 			<input 	type="text" name="receiverPhone" class="ct_input_g" style="width: 100px; height: 19px" 
-							<%-- maxLength="20" value=<%=purchase.getReceiverPhone() %> /> --%>
 							maxLength="20" value="${purchase.receiverPhone }" />
 		</td>
 	</tr>
@@ -98,7 +111,6 @@
 		<td bgcolor="D6D6D6" width="1"></td>
 		<td class="ct_write01">
 			<input 	type="text" name="dlvyAddr" class="ct_input_g" style="width: 100px; height: 19px" 
-<%-- 							maxLength="20" value=<%=purchase.getdlvyAddr() %> /> --%>
 							maxLength="20" value="${purchase.dlvyAddr}" />
 		</td>
 	</tr>
@@ -141,7 +153,8 @@
 					<img src="/images/ct_btnbg01.gif" width="17" height="23"/>
 				</td>
 					<td background="/images/ct_btnbg02.gif" class="ct_btn01"	style="padding-top: 3px;">
-					<input type="submit" value="수정"/>
+					수정
+					<!-- <input type="submit" value="수정"/> -->
 				</td>
 				<td width="14" height="23">
 					<img src="/images/ct_btnbg03.gif" width="14" height="23"/>
@@ -152,7 +165,7 @@
 					<img src="/images/ct_btnbg01.gif" width="17" height="23"/>
 				</td>
 					<td background="/images/ct_btnbg02.gif" class="ct_btn01" style="padding-top: 3px;">
-					<a href="javascript:history.go(-1)">취소</a>
+					취소
 				</td>
 				<td width="14" height="23">
 					<img src="/images/ct_btnbg03.gif" width="14" height="23"/>

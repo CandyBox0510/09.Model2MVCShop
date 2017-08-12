@@ -9,11 +9,27 @@
 
 <link rel="stylesheet" href="/css/admin.css" type="text/css">
 
+<script src="http://code.jquery.com/jquery-2.1.4.min.js"></script>
 <script type="text/javascript">
 	function fncGetList(currentPage) {
-		document.getElementById("currentPage").value = currentPage;
-		document.detailForm.submit();
+		$('#currentPage').value(currentPage)
+		$('form').attr("method","POST").attr("action","/purchase/listWishPurchase").submit();
 	}
+	
+	$(function(){
+		
+		$("tr.ct_list_pop td:nth-child(3)").on("click" , function(){
+			var url = $(this).find("input").val();
+			if(url!=null){
+				self.location = url;
+			}
+		})
+		
+		$("tr.ct_list_pop td:nth-child(9)").on("click" , function(){
+			self.location = "/purchase/cancelWishPurchase?wishNo="+$(this).find('input').val();
+		})
+		
+	})
 </script>
 </head>
 
@@ -61,17 +77,15 @@
 			<c:set var="i" value="${i+1 }"/>
 			<tr class="ct_list_pop">
 			<td align="center">
-				${i }
+				${i}
 			</td>
 			<td></td>
 			
 			<td align="left">
+				${wish.purchaseProd.prodName }
 				<c:if test="${wish.tranStatusCode eq null}">
-				<a href="/product/getProduct?&menu=search&prodNo=${wish.purchaseProd.prodNo }"> ${wish.purchaseProd.prodName }</a>
-				</c:if>
-				<c:if test="${!empty wish.tranStatusCode}">
-				${wish.purchaseProd.prodName }(구매불가 재고X)
-				</c:if>
+					<input type="hidden" value="/product/getProduct?&menu=search&prodNo=${wish.purchaseProd.prodNo }">
+				</c:if> 
 			</td>
 			<td></td>
 			<td align="left">${wish.purchaseProd.price }</td>
@@ -79,7 +93,8 @@
 			<td align="left">${wish.purchaseProd.regDate }</td>
 			<td></td>
 			<td align="center">
-				<a href="/purchase/cancelWishPurchase?wishNo=${wish.wishNo}">취소</a>
+				취소
+				<input type="hidden" value="${wish.wishNo }"> 
 			</td>
 	</tr>
 	</c:forEach>

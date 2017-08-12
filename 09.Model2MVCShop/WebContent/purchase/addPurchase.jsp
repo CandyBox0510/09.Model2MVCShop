@@ -1,68 +1,71 @@
-<%@page import="com.model2.mvc.service.domain.Product"%>
-<%@page import="com.model2.mvc.service.domain.User"%>
-<%@page import="com.model2.mvc.service.domain.Purchase"%>
 <%@ page language="java" contentType="text/html; charset=EUC-KR"
     pageEncoding="EUC-KR"%>
-
-<%
-	
-	Purchase purchase = (Purchase)request.getAttribute("purchase");
-	User buyer = (User)purchase.getBuyer();
-	Product product = (Product)purchase.getPurchaseProd();
-
-%>
 
 
 <html>
 <head>
 <title>Insert title here</title>
+
+<script src="http://code.jquery.com/jquery-2.1.4.min.js"></script>
+	<!-- <script type="text/javascript">
+		 $(function(){
+			$('form').attr("method","POST").attr("action", "/purchase/updatePurchase?tranNo="+$(this).find('input').val()).submit();
+		 }) 
+	</script> 
+	
+	이거 왜있는거지
+	-->
+</head>
+
 </head>
 
 <body>
 
-<form name="updatePurchase" action="/purchase/updatePurchaseView?tranNo=<%=purchase.getTranNo()%>" method="post">
+<form name="updatePurchase">
+
+<%-- <input type="hidden" value="${purchase.tranNo }"> 이거 왜있는거지 --%>
 
 다음과 같이 구매가 되었습니다.
 
 <table border=1>
 	<tr>
 		<td>물품번호</td>
-		<td><%=product.getProdNo() %></td>
+		<td>${purchaseProd.prodNo }</td>
 		<td></td>
 	</tr>
 	<tr>
 		<td>구매자아이디</td>
-		<td><%=buyer.getUserId() %></td>
+		<td>${buyer.userId }</td>
 		<td></td>
 	</tr>
 	<tr>
 		<td>구매방법</td>
-		<td><%=purchase.getPaymentOption().equals("1") ? "현금구매" : "신용구매" %></td>
+		<td>${purchase.paymentOption eq 1 ? '현금구매' : '신용구매' }</td>
 		<td></td>
 	</tr>
 	<tr>
 		<td>구매자이름</td>
-		<td><%=purchase.getReceiverName() %></td>
+		<td>${purchase.receiverName }</td>
 		<td></td>
 	</tr>
 	<tr>
 		<td>구매자연락처</td>
-		<td><%=purchase.getReceiverPhone() %></td>
+		<td>${purchase.receiverPhone }</td>
 		<td></td>
 	</tr>
 	<tr>
 		<td>구매자주소</td>
-		<td><%=purchase.getDlvyAddr() %></td>
+		<td>${purchase.dlvyAddr }</td>
 		<td></td>
 	</tr>
 		<tr>
 		<td>구매요청사항</td>
-		<td><%=purchase.getDlvyRequest() %></td>
+		<td>${purchase.dlvyRequest }</td>
 		<td></td>
 	</tr>
 	<tr>
 		<td>배송희망일자</td>
-		<td><%=purchase.getDlvyDate() %></td>
+		<td>${purchase.dlvyDate }</td>
 		<td></td>
 	</tr>
 </table>

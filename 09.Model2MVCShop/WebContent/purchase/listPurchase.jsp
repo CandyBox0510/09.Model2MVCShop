@@ -10,11 +10,36 @@
 
 <link rel="stylesheet" href="/css/admin.css" type="text/css">
 
+<script src="http://code.jquery.com/jquery-2.1.4.min.js"></script>
 <script type="text/javascript">
 	function fncGetList(currentPage) {
-		document.getElementById("currentPage").value = currentPage;
-		document.detailForm.submit();
+		$('#currentPage').value(currentPage)
+		$('form').attr("method","POST").attr("action","/purchase/listPurchase").submit();
 	}
+	
+	$(function(){
+		
+		$("tr.ct_list_pop td:nth-child(1)").on("click" , function(){
+			var url = $(this).find("input").val();
+			if(url!=null){
+				self.location = url;
+			}
+		})
+		
+		$("tr.ct_list_pop td:nth-child(3)").on("click" , function(){
+			var url = $(this).find("input").val();
+			if(url!=null){
+				self.location = url;
+			}
+		})
+		
+		$("tr.ct_list_pop td:nth-child(11)").on("click" , function(){
+			var url = $(this).find("input").val();
+			if(url!=null){
+				self.location = url;
+			}
+		})
+	})
 </script>
 </head>
 
@@ -22,7 +47,7 @@
 
 <div style="width: 98%; margin-left: 10px;">
 
-<form name="detailForm" action="/purchase/listPurchase" method="post">
+<form name="detailForm">
 
 <table width="100%" height="37" border="0" cellpadding="0"	cellspacing="0">
 	<tr>
@@ -40,7 +65,6 @@
 
 <table width="100%" border="0" cellspacing="0" cellpadding="0"	style="margin-top: 10px;">
 	<tr>
-		<%-- <td colspan="11">전체 <%=total %> 건수, 현재 <%=currentPage %> 페이지</td> --%>
 		<td colspan="11">전체 ${resultPage.totalCount } 건수, 현재 ${resultPage.currentPage } 페이지</td>
 	</tr>
 	<tr>
@@ -66,49 +90,46 @@
 		<c:forEach var="purchase" items="${list }">
 			<c:set var="i" value="${i+1 }"/>
 			<tr class="ct_list_pop">
-			<td align="center">
-				<c:if test="${purchase.tranCode eq 1 }">
-				<a href="/purchase/getPurchase?tranNo=${purchase.tranNo }"> ${i}</a>
+				<td align="center">
+					${i}
+					<c:if test="${purchase.tranCode eq 1 }">
+					<input type="hidden" value="/purchase/getPurchase?tranNo=${purchase.tranNo }"> 
+					</c:if>
+				</td>
+				<td></td>
+				<td align="left">
+					${purchase.purchaseProd.prodName }
+					<c:if test="${purchase.tranCode eq 1 }">
+					<input type="hidden" value="/product/getProduct?&comePath=purchaser&menu=search&prodNo=${purchase.purchaseProd.prodNo }">
+					</c:if>
+				</td>
+				<td></td>
+				<td align="left">${user.userName }</td>
+				<td></td>
+				<td align="left">${user.phone }</td>
+				<td></td>
+				<td align="left">현재
+							<c:choose>
+							<c:when test="${! empty purchase.tranCode && purchase.tranCode eq 1}">
+								구매완료
+							</c:when>
+							<c:when test="${! empty purchase.tranCode && purchase.tranCode eq 2}">
+								배송중
+							</c:when>
+							<c:when test="${! empty purchase.tranCode && purchase.tranCode eq 3}">
+								배송완료
+							</c:when>
+						</c:choose>
+							<!-- ${purchase.tranCode} -->
+						상태 입니다.</td>
+				<td></td>
+				<td align="left">	
+				<c:if test="${! empty purchase.tranCode && purchase.tranCode eq 2}">
+				물건도착
+				<input type="hidden" value="/purchase/updateTranCode?tranNo=${purchase.tranNo }&tranCode=3">
 				</c:if>
-				<c:if test="${purchase.tranCode ne 1 }">
-				${i}
-				</c:if>
-			</td>
-			<td></td>
-			<td align="left">
-				<c:if test="${purchase.tranCode eq 1 }">
-				<a href="/product/getProduct?&comePath=purchaser&menu=search&prodNo=${purchase.purchaseProd.prodNo }"> ${purchase.purchaseProd.prodName }</a>
-				</c:if>
-				<c:if test="${purchase.tranCode ne 1 }">
-				${purchase.purchaseProd.prodName }
-				</c:if>
-			</td>
-			<td></td>
-			<td align="left">${user.userName }</td>
-			<td></td>
-			<td align="left">${user.phone }</td>
-			<td></td>
-			<td align="left">현재
-						<c:choose>
-						<c:when test="${! empty purchase.tranCode && purchase.tranCode eq 1}">
-							구매완료
-						</c:when>
-						<c:when test="${! empty purchase.tranCode && purchase.tranCode eq 2}">
-							배송중
-						</c:when>
-						<c:when test="${! empty purchase.tranCode && purchase.tranCode eq 3}">
-							배송완료
-						</c:when>
-					</c:choose>
-						<!-- ${purchase.tranCode} -->
-					상태 입니다.</td>
-			<td></td>
-			<td align="left">	
-			<c:if test="${! empty purchase.tranCode && purchase.tranCode eq 2}">
-			<a href="/purchase/updateTranCode?tranNo=${purchase.tranNo }&tranCode=3">물건도착</a>
-			</c:if>
-		</td>
-	</tr>
+				</td>
+			</tr>
 	</c:forEach>
 	
 	

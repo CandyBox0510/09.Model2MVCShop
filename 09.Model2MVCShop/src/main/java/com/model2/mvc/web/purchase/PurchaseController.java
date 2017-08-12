@@ -79,7 +79,6 @@ public class PurchaseController {
 		System.out.println(purchase.getBuyer());
 		
 		model.addAttribute("purchase", purchase);
-				
 		return "forward:/purchase/addPurchaseView.jsp";
 	}
 	
@@ -94,7 +93,7 @@ public class PurchaseController {
 		return "forward:/purchase/getPurchase.jsp";
 	}
 	
-	@RequestMapping(value="updatePurchaseView", method=RequestMethod.GET)
+	@RequestMapping(value="updatePurchase", method=RequestMethod.GET)
 	public String updatePurchaseView(@ModelAttribute("purchase")Purchase purchase,
 										@RequestParam("tranNo")String tranNo,
 										Model model) throws Exception{

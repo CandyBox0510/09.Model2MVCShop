@@ -9,11 +9,18 @@
 
 <link rel="stylesheet" href="/css/admin.css" type="text/css">
 
+<script src="http://code.jquery.com/jquery-2.1.4.min.js"></script>
 <script type="text/javascript">
-	function fncGetList(currentPage) {
-		document.getElementById("currentPage").value = currentPage;
-		document.detailForm.submit();
-	}
+		function fncGetList(currentPage) {
+			$('#currentPage').value(currentPage)
+			$('form').attr("method","POST").attr("action","/purchase/listPurchase").submit();
+		}
+		
+		$(function(){
+			$("tr.ct_list_pop td:nth-child(1)").on("click",function(){
+				
+			})			
+		})		
 </script>
 </head>
 
@@ -21,7 +28,7 @@
 
 <div style="width: 98%; margin-left: 10px;">
 
-<form name="detailForm" action="/purchase/listPurchase" method="post">
+<form name="detailForm">
 
 <table width="100%" height="37" border="0" cellpadding="0"	cellspacing="0">
 	<tr>
@@ -63,14 +70,15 @@
 		<c:forEach var="purchase" items="${purchaseList }">
 			<c:set var="i" value="${i+1 }"/>
 			<tr class="ct_list_pop">
-			<td align="center">
-				<c:if test="${purchase.tranCode eq 1 }">
-				<a href="/purchase/getPurchase?tranNo=${purchase.tranNo }"> ${i}</a>
-				</c:if>
-				<c:if test="${purchase.tranCode ne 1 }">
-				${i}
-				</c:if>
-			</td>
+				<td align="center">
+					±¼·¯¶û${i}
+					<c:if test="${purchase.tranCode eq 1 }">
+					<input type="hidden" value="/purchase/getPurchase?tranNo=${purchase.tranNo }">
+					</c:if>
+					<%-- <c:if test="${purchase.tranCode ne 1 }">
+					${i}
+					</c:if> --%>
+				</td>
 			<td></td>
 			<td align="left">
 				<%-- <a href="/getUser.do?userId=${user.userId }"> ${user.userId }</a> --%>

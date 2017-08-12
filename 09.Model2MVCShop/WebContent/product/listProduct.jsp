@@ -20,14 +20,14 @@
 <script type="text/javascript">
 	// 검색 / page 두가지 경우 모두 Form 전송을 위해 JavaScrpt 이용  
 	function fncGetList(currentPage) {
-		document.getElementById("currentPage").value = currentPage;
-	   	document.detailForm.submit();		
+		$('#currentPage').val(currentPage);
+		$('form').attr("method" , "POST").attr("action" , "/product/listProduct?menu="+$(this).find("input[type='hidden']")).submit();		
 	}
 	
 	$(function(){
 		
 		 $( "td.ct_btn01:contains('검색')" ).on("click" , function() {
-				fncGetUserList(1);
+				fncGetList(1);
 		 });
 		
 		 $(".ct_list_pop td:nth-child(3)").on("click", function(){
@@ -36,14 +36,16 @@
 			 self.location = "/product/getProduct?prodNo="+$(this).find('input').val()+"&menu="+$($(this).find('input')[1]).val()
 		 })
 		 
-		 $(".ct_list_pop td:nth-child(9):contains('배송하기')").on("click", function(){
+		 $(".ct_list_pop td:nth-child(9) span").on("click", function(){
 			 console.log("히든1 : "+$(this).find('input').val());
 			 self.location = "/purchase/updateTranCodeByProd?prodNo="+$(this).find('input').val()+"&tranCode=2"
 		 })
 		 
 		 $(".ct_list_pop td:nth-child(11)").on("click", function(){
 			 console.log("히든1 : "+$(this).find('input').val());
+			 if($(this).find('input').val() != null){
 			 self.location = "/purchase/addWishPurchase?prodNo="+$(this).find('input').val()
+			 }
 		 })
 	})
 </script>
@@ -53,7 +55,9 @@
 
 <div style="width:98%; margin-left:10px;">
 
-<form name="detailForm" action="/product/listProduct?menu=${param.menu}" method="post">
+<form name="detailForm">
+
+<input type="hidden" value=${param.menu }>
 
 <table width="100%" height="37" border="0" cellpadding="0"	cellspacing="0">
 	<tr>
@@ -187,8 +191,8 @@
 							<c:choose>
 								<c:when test="${product.tranStatusCode eq 1 }">
 									<%-- 구매완료 / <a href="/purchase/updateTranCodeByProd?prodNo=${product.prodNo}&tranCode=2">배송하기</a> --%>
-									<input type="hidden" value=${product.prodNo }>
-									구매완료 / 배송하기
+									
+									구매완료 / <span>배송하기<input type="hidden" value=${product.prodNo }></span>
 								</c:when>
 								<c:when test="${product.tranStatusCode eq 2 }">
 									배송중

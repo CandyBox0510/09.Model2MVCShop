@@ -9,6 +9,25 @@
 <title>구매상세조회</title>
 
 <link rel="stylesheet" href="/css/admin.css" type="text/css">
+<script src="http://code.jquery.com/jquery-2.1.4.min.js"></script>
+<script type="text/javascript">
+	$(function(){
+		
+		$("td.ct_btn01:contains('구매취소')").on("click" , function(){
+			self.location = "/purchase/cancelPurchase?tranNo=${param.tranNo }"
+				self.location = "/purchase/cancelPurchase?tranNo="+$(this).find("input").val();
+		})
+		
+		$("td.ct_btn01:contains('수정')").on("click" , function(){
+			self.location = "/purchase/updatePurchase?tranNo="+$(this).find("input").val(); 
+		})
+		
+		$("td.ct_btn01:contains('확인')").on("click" , function(){
+			history.go(-1);
+		})
+		
+	})
+</script>
 
 </head>
 
@@ -46,7 +65,6 @@
 			<table width="100%" border="0" cellspacing="0" cellpadding="0">
 				<tr>
 					<td width="105">
-<%-- 					<%=product.getProdNo() %></td> --%>
 					${purchase.purchaseProd.prodNo }</td>
 					<td></td>
 				</tr>
@@ -61,7 +79,6 @@
 			구매자아이디 <img	src="/images/ct_icon_red.gif" width="3" height="3" align="absmiddle"/>
 		</td>
 		<td bgcolor="D6D6D6" width="1"></td>
-		<%-- <td class="ct_write01"><%=user.getUserId() %></td> --%>
 		<td class="ct_write01">${purchase.buyer.userId }</td>
 	</tr>
 	<tr>
@@ -84,7 +101,6 @@
 		<td height="1" colspan="3" bgcolor="D6D6D6"></td>
 	</tr>
 	<tr>
-		<%-- <td width="104" class="ct_write"><%=purchase.getReceiverName() %></td> --%>
 		<td width="104" class="ct_write">${purchase.receiverName }</td>
 		<td bgcolor="D6D6D6" width="1"></td>
 		<td class="ct_write01">SCOTT</td>
@@ -95,7 +111,6 @@
 	<tr>
 		<td width="104" class="ct_write">구매자연락처</td>
 		<td bgcolor="D6D6D6" width="1"></td>
-		<%-- <td class="ct_write01"><%=purchase.getReceiverPhone() %></td> --%>
 		<td class="ct_write01">${purchase.receiverPhone }</td>
 	</tr>
 	<tr>
@@ -104,7 +119,6 @@
 	<tr>
 		<td width="104" class="ct_write">구매자주소</td>
 		<td bgcolor="D6D6D6" width="1"></td>
-		<%-- <td class="ct_write01"><%=purchase.getDlvyAddr() %></td> --%>
 		<td class="ct_write01">${purchase.dlvyAddr }</td>
 	</tr>
 	<tr>
@@ -113,7 +127,6 @@
 	<tr>
 		<td width="104" class="ct_write">구매요청사항</td>
 		<td bgcolor="D6D6D6" width="1"></td>
-		<%-- <td class="ct_write01"><%=purchase.getdlvyRequest() %></td> --%>
 		<td class="ct_write01">${purchase.dlvyRequest }</td>
 	</tr>
 	<tr>
@@ -122,7 +135,6 @@
 	<tr>
 		<td width="104" class="ct_write">배송희망일</td>
 		<td bgcolor="D6D6D6" width="1"></td>
-		<%-- <td class="ct_write01"><%=purchase.getdlvyDate() %></td> --%>
 		<td class="ct_write01">${purchase.dlvyDate }</td>
 	</tr>
 
@@ -152,7 +164,8 @@
 						<img src="/images/ct_btnbg01.gif" width="17" height="23"/>
 					</td>
 					<td background="/images/ct_btnbg02.gif" class="ct_btn01"	style="padding-top: 3px;">
-						<a href="/purchase/cancelPurchase?tranNo=${param.tranNo }">구매취소</a>
+						<input type="hidden" value=${param.tranNo }>
+						구매취소
 					</td>
 					<td width="14" height="23">
 						<img src="/images/ct_btnbg03.gif" width="14" height="23"/>
@@ -162,8 +175,8 @@
 						<img src="/images/ct_btnbg01.gif" width="17" height="23"/>
 					</td>
 					<td background="/images/ct_btnbg02.gif" class="ct_btn01"	style="padding-top: 3px;">
-						<%-- <a href="/updatePurchaseView.do?tranNo=<%=purchase.getTranNo()%>">수정</a> --%>
-						<a href="/purchase/updatePurchaseView?tranNo=${purchase.tranNo }">수정</a>
+						<input type="hidden" value=${purchase.tranNo }>
+						수정
 					</td>
 					<td width="14" height="23">
 						<img src="/images/ct_btnbg03.gif" width="14" height="23"/>
@@ -173,7 +186,7 @@
 						<img src="/images/ct_btnbg01.gif" width="17" height="23"/>
 					</td>
 					<td background="/images/ct_btnbg02.gif" class="ct_btn01"	style="padding-top: 3px;">
-						<a href="javascript:history.go(-1);">확인</a>
+						확인
 					</td>
 					<td width="14" height="23">
 						<img src="/images/ct_btnbg03.gif"width="14" height="23"/>
